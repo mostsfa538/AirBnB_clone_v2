@@ -129,15 +129,16 @@ class HBNBCommand(cmd.Cmd):
                 pair = command[i].partition("=")
                 if '"' in pair[2]:
                     new_value = pair[2].strip('"')
-                elif '_' in pair[2]:
-                    new_value = pair[2].replace('_', ' ')
+                    if '_' in pair[2]:
+                        new_value = new_value.replace('_', ' ')
                 else:
                     new_value = pair[2]
                 for char in new_value:
                     if not char.isalnum():
-                        if not char == '.' or not char == '_':
-                            flag = 0
-                            break
+                        if char == '.' or char == ' ' or char == '-':
+                            continue
+                        flag = 0
+                        break
                 if flag:
                     setattr(new_instance, pair[0], new_value)
         storage.save()
