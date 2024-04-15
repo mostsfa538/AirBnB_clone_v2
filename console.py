@@ -139,16 +139,6 @@ class HBNBCommand(cmd.Cmd):
                         flag = 0
                         break
                 if flag:
-                    if '.' in new_value:
-                        try:
-                            new_value = float(new_value)
-                        except ValueError:
-                            new_value = None
-                    else:
-                        try:
-                            new_value = int(new_value)
-                        except ValueError:
-                            new_value = None
                     setattr(new_instance, pair[0], new_value)
         storage.save()
         print(new_instance.id)
