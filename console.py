@@ -128,8 +128,20 @@ class HBNBCommand(cmd.Cmd):
                 flag = 1
                 pair = command[i].partition("=")
                 if '"' in pair[2]:
-                    new_value = pair[2].strip('"')
-                    if '_' in pair[2]:
+                    if pair[2][0] == '"' and pair[2][-1] == '"':
+                        new_value = pair[2][1:-2]
+                    if '"' in new_value:
+                        new_string
+                        i = 0
+                        while (i < len(new_value)):
+                            if new_value[i] == '"':
+                                new_string += "\\"
+                                new_string += '"'
+                            else:
+                                new_string += new_value[i]
+                            i = i + 1
+                        new_value = new_string
+                    if '_' in new_value:
                         new_value = new_value.replace('_', ' ')
                 else:
                     new_value = pair[2]
