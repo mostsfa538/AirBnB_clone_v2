@@ -1,29 +1,49 @@
 #!/usr/bin/python3
 
-from sqlalchemy import *
-from sqlalchemy.orm import *
-# from dotenv import load_dotenv
-import os
-
-#load_dotenv()
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, scoped_session
+from models.base_model import BaseModel, Base
+from models.city import City
+from models.place import Place
+from models.state import State
+from models.user import User
+from models.review import Review
+from models.amenity import Amenity
+from os import getenv
 
 
 class DBStorage:
+    """ class DBStorage"""
     __engine = None
     __session = None
 
     def __init__(self):
-        try:
-            self.__engine = sqlalchemy.create_engine(
-                'mysql+mysqldb://{}:{}@localhost/{}'.format(
-                    'hbnb_dev', 'hbnb_dev_pwd', 'hbnb_dev_db'),
-                pool_pre_ping=True)
-            Session = sessionmaker(bind=self.__engine)
-            session = Session()
-        except Exception:
-            raise Exception("couldn't connect to server")
-            return
 
-        if os.environ['HBNB_ENV'] == 'test':
-            for tbl in reversed(meta.sorted_tables):
-                self.__engine.execute(tbl.delete())
+        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}:3306/{}'
+                                      .format(getenv('HBNB_MYSQL_USER'),
+                                              getenv('HBNB_MYSQL_PWD'),
+                                              getenv('HBNB_MYSQL_HOST'),
+                                              getenv('HBNB_MYSQL_DB')),
+                                      pool_pre_ping=True)
+        if getenv('HBNB_ENV') == 'test':
+            Base.metadate.drop_all(self.__engine)
+
+    def all(self, cls=None):
+        """
+            return all objects depending of the
+            class name or all classes
+        """
+        classes = []
+        if cls is None:
+            classes = [City, Place, State, User, Review, Amenity]
+        elif cls is str:
+            classes = [eval(cls)]
+        else:
+            classes = [cls]
+        objects = {}
+        for clas in classes:
+            for obj in self.__session.query(clas).all():
+                key = "{}.{}".format(type(obj).__name__, obj.id)
+                objects[key] = obj
+        return objects
+
