@@ -66,16 +66,11 @@ class FileStorage:
             pass
 
     def delete(self, obj=None):
-        """
-            Delete an object from the __objects Dict.
-        """
+        """Delete an object from the __objects Dict"""
 
         if obj is not None:
             del FileStorage.__objects[f'{type(obj).__name__}.{obj.id}']
 
     def close(self):
-        """
-            deserializing the JSON file to objects
-        """
-
+        """deserializing the JSON file to objects"""
         self.reload()
