@@ -18,16 +18,17 @@ def hnbn():
 
 
 @app.route('/c/<text>', strict_slashes=False)
-def cParam(text):
+def c_aram(text):
     """ """
-    return 'C {}'.format(text)
+    return f'C {text}'
 
 
 @app.route('/python/', strict_slashes=False)
 @app.route('/python/<text>', strict_slashes=False)
 def pythonParam(text="is cool"):
     """ """
-    return 'Python {}'.format(text.replace('_', ' '))
+    text = text.replace('_', ' ')
+    return f'Python {text}'
 
 
 if __name__ == '__main__':
