@@ -7,7 +7,7 @@ from models.state import State
 app = Flask(__name__)
 
 
-@app.route('/states_list', states_list=False)
+@app.route('/states_list', strict_slashes=False)
 def list_tables():
     """Display a list of all State objects."""
     states = storage.all(State).values()
