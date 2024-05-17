@@ -20,6 +20,7 @@ def hnbn():
 @app.route('/c/<text>', strict_slashes=False)
 def c_param(text):
     """ """
+    text = text.replace('_', ' ')
     return f'C {text}'
 
 
