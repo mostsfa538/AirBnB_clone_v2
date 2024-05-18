@@ -12,21 +12,11 @@ def teardown_db(exception):
     storage.close()
 
 
-@app.route('/states', strict_slashes=False)
-def states():
-    """ """
-    states = storage.all(State)
-    return render_template('9-states.html', states=states)
-
-
-@app.route("/states/<id>", strict_slashes=False)
-def states_id(id):
+@app.route('/cities_by_states', strict_slashes=False)
+def cities_by_states():
     """ """
     states = sorted(storage.all(State).values(), key=lambda x: x.name)
-    for state in states:
-        if state.id == id:
-            return render_template("9-states.html", states=state)
-    return render_template("9-states.html")
+    return render_template('8-cities_by_states.html', states=states)
 
 
 if __name__ == '__main__':
